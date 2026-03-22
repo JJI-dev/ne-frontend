@@ -14,6 +14,9 @@ export default function CursorAnimation() {
     const ring = ringRef.current
     if (!dot || !ring) return
 
+    const dotEl = dot
+    const ringEl = ring
+
     let mouseX = 0, mouseY = 0
     let ringX = 0, ringY = 0
     let raf: number
@@ -23,22 +26,22 @@ export default function CursorAnimation() {
       if (isDark === dark) return
       isDark = dark
       const color = dark ? '#ffffff' : '#0a0a0a'
-      dot.style.background = color
-      ring.style.borderColor = color
+      dotEl.style.background = color
+      ringEl.style.borderColor = color
     }
 
     function setSize(big: boolean) {
-      dot.style.width = big ? '4px' : '8px'
-      dot.style.height = big ? '4px' : '8px'
-      ring.style.width = big ? '52px' : '36px'
-      ring.style.height = big ? '52px' : '36px'
+      dotEl.style.width = big ? '4px' : '8px'
+      dotEl.style.height = big ? '4px' : '8px'
+      ringEl.style.width = big ? '52px' : '36px'
+      ringEl.style.height = big ? '52px' : '36px'
     }
 
     const onMove = (e: MouseEvent) => {
       mouseX = e.clientX
       mouseY = e.clientY
-      dot.style.left = mouseX + 'px'
-      dot.style.top = mouseY + 'px'
+      dotEl.style.left = mouseX + 'px'
+      dotEl.style.top = mouseY + 'px'
 
       // nav panel(#nav-overlay-panel) 또는 X버튼(z:201, 다크 bg 위) 위에 있는지 확인
       const el = document.elementFromPoint(mouseX, mouseY)
@@ -52,8 +55,8 @@ export default function CursorAnimation() {
     const animate = () => {
       ringX += (mouseX - ringX) * 0.12
       ringY += (mouseY - ringY) * 0.12
-      ring.style.left = ringX + 'px'
-      ring.style.top = ringY + 'px'
+      ringEl.style.left = ringX + 'px'
+      ringEl.style.top = ringY + 'px'
       raf = requestAnimationFrame(animate)
     }
 
