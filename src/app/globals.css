@@ -1,26 +1,98 @@
-@import "tailwindcss";
+/* Noto Sans KR */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --black: #0a0a0a;
+  --white: #ffffff;
+  --gray-100: #f5f5f5;
+  --gray-200: #e8e8e8;
+  --gray-400: #aaaaaa;
+  --gray-600: #666666;
+  --tracking: -0.04em;
+  --px: clamp(20px, 4vw, 60px);
+  --font-display: 'Panchang', 'Noto Sans KR', sans-serif;
+  --font-body: 'Pretendard', 'Noto Sans KR', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--black);
+  letter-spacing: var(--tracking);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+a { text-decoration: none; color: inherit; }
+button { background: none; border: none; font-family: inherit; cursor: none; }
+
+/* ── Custom cursor ── */
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--black);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.15s;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--black);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.15s;
+}
+
+/* ── Work grid hover ── */
+.work-item {
+  overflow: hidden;
+  position: relative;
+}
+.work-item-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.work-item:hover .work-item-inner {
+  transform: scale(1.04);
+}
+.work-item-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 72px 20px 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%);
+}
+
+/* ── main → footer gap ── */
+main {
+  padding-bottom: 60px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .work-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 480px) {
+  .work-grid { grid-template-columns: 1fr !important; }
+  :root { --px: 16px; }
 }
