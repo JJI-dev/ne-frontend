@@ -21,16 +21,19 @@ export default function AboutPage() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <main style={{ paddingTop: '70px', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{
-          padding: '60px var(--px)',
-          maxWidth: '720px',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-        }}>
+      <main style={{ paddingTop: '80px', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div
+          className="reveal visible"
+          style={{
+            padding: '60px var(--px)',
+            maxWidth: '720px',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
 
           {/* Character image */}
           <div style={{

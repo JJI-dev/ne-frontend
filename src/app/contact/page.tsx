@@ -19,8 +19,8 @@ export default function ContactPage() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <main style={{ paddingTop: '70px', flex: 1 }}>
-        <div style={{ padding: '60px var(--px)', maxWidth: '600px' }}>
+      <main style={{ paddingTop: '80px', flex: 1 }}>
+        <div className="reveal visible" style={{ padding: '60px var(--px)', maxWidth: '600px' }}>
           <div style={{
             fontFamily: 'var(--font-display)', fontWeight: 700,
             fontSize: 'clamp(48px, 8vw, 96px)',

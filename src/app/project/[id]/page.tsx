@@ -11,9 +11,9 @@ export function generateStaticParams() {
 
 export default function ProjectDetailPage({ params }: Props) {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <main style={{ paddingTop: '70px', flex: 1 }}>
+      <main style={{ paddingTop: '80px' }}>
         <ProjectDetailClient projectId={params.id} />
       </main>
       <Footer />

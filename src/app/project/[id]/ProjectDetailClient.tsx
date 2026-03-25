@@ -37,7 +37,10 @@ export default function ProjectDetailClient({ projectId }: Props) {
     if (!htmlContent) return
     const handler = (e: MessageEvent) => {
       if (e.data?.type === 'resize' && typeof e.data.height === 'number') {
-        setIframeHeight(e.data.height + 1)
+        const h = Math.max(400, Math.min(e.data.height + 40, window.innerHeight * 8))
+        setIframeHeight(h)
+        // 1회 수신 후 리스너 제거 — 무한 업데이트 방지
+        window.removeEventListener('message', handler)
       }
     }
     window.addEventListener('message', handler)
@@ -76,7 +79,7 @@ export default function ProjectDetailClient({ projectId }: Props) {
     { label: 'TYPE', value: project.type || '-' },
   ]
 
-  // Inject: overflow hidden on html+body, resize postMessage
+  // Inject: overflow hidden on html+body, load 1회만 height 측정
   const injectedHtml = htmlContent
     ? htmlContent.replace(
         /<head>/i,
@@ -84,10 +87,10 @@ export default function ProjectDetailClient({ projectId }: Props) {
       ).replace(
         '</body>',
         `<script>
-          function _sendH(){window.parent.postMessage({type:'resize',height:document.documentElement.scrollHeight},'*')}
-          window.addEventListener('load',_sendH);
-          window.addEventListener('resize',_sendH);
-          new MutationObserver(_sendH).observe(document.body,{childList:true,subtree:true,attributes:true});
+          window.addEventListener('load',function(){
+            var h=document.documentElement.scrollHeight;
+            window.parent.postMessage({type:'resize',height:h},'*');
+          });
         </script></body>`
       )
     : ''
@@ -180,20 +183,30 @@ export default function ProjectDetailClient({ projectId }: Props) {
         {isLoading ? (
           <p style={{ fontSize: '13px', color: 'var(--gray-400)' }}>콘텐츠를 불러오는 중...</p>
         ) : injectedHtml ? (
-          <iframe
-            ref={iframeRef}
-            srcDoc={injectedHtml}
-            style={{
-              width: '100%',
-              height: iframeHeight,
-              border: 'none',
-              display: 'block',
-              overflow: 'hidden',
-            }}
-            scrolling="no"
-            sandbox="allow-scripts"
-            title="project-content"
-          />
+          <div style={{ position: 'relative' }}>
+            {/* 투명 overlay — iframe 커서 애니메이션 유지 */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 2,
+              cursor: 'none',
+            }} />
+            <iframe
+              ref={iframeRef}
+              srcDoc={injectedHtml}
+              style={{
+                width: '100%',
+                height: iframeHeight,
+                border: 'none',
+                display: 'block',
+                overflow: 'hidden',
+                pointerEvents: 'none',
+              }}
+              scrolling="no"
+              sandbox="allow-scripts"
+              title="project-content"
+            />
+          </div>
         ) : (
           <p style={{ fontSize: '13px', color: 'var(--gray-400)' }}>
             HTML 콘텐츠:{' '}
