@@ -51,7 +51,7 @@ export default function WorkGrid() {
 
   // '.' 카테고리는 별도 처리 — 해당 게시물 없음
   const filtered = activeFilter === '.'
-    ? []  // 점 카테고리 = 항상 빈 목록
+    ? []  
     : activeFilter === 'ALL'
       ? projects
       : projects.filter(p =>
@@ -72,9 +72,13 @@ export default function WorkGrid() {
               style={{
                 fontFamily: 'var(--font-display)',
                 fontWeight: 700,
-                fontSize: f === '.' ? 'clamp(20px, 3.5vw, 32px)' : 'clamp(28px, 6vw, 80px)',
+                /* 모바일 깨짐 해결 1: 최소 크기(16px)를 지정해 좁은 화면 텍스트 넘침 방지 */
+                fontSize: f === '.' ? 'clamp(20px, 3.5vw, 32px)' : 'clamp(16px, 7vw, 80px)',
                 letterSpacing: '0.01em',
-                lineHeight: f === '.' ? 1.4 : 1,
+                /* 모바일 깨짐 해결 2: 줄간격을 늘려 폰트 상하단 크롭 현상 방지 */
+                lineHeight: f === '.' ? 1.4 : 1.15,
+                /* 모바일 깨짐 해결 3: 단어가 길어도 줄바꿈되지 않게 방지 */
+                whiteSpace: 'nowrap',
                 color: activeFilter === f ? 'var(--black)' : 'var(--gray-400)',
                 cursor: 'pointer',
                 userSelect: 'none',

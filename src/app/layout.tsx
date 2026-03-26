@@ -3,7 +3,7 @@ import './globals.css'
 import CursorAnimation from '@/components/CursorAnimation'
 
 export const metadata: Metadata = {
-  title: 'JJI-NE — Creator',
+  title: 'JJI-NE: Canvas',
   description: 'JJI-NE Portfolio',
 }
 
