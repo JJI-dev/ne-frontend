@@ -14,7 +14,7 @@ export default function Footer() {
         <div>
           <p style={{ fontSize: '11px', color: 'var(--gray-400)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Contact</p>
           <a href="mailto:contact@jji.kr" style={{ fontSize: '14px', fontWeight: 500, letterSpacing: 'var(--tracking)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-            hello@ne.jji.kr
+            contact@jji.kr
           </a>
         </div>
         <div>

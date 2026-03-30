@@ -53,11 +53,17 @@ export default function SpotlightSearch({ open, onClose }: Props) {
         overflow: 'hidden',
         boxShadow: '0 32px 80px rgba(0,0,0,0.35)',
       }}>
+        {/* 상단 검색창 영역 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '20px 24px', borderBottom: '1px solid var(--gray-200)' }}>
-          <svg width="20" height="20" viewBox="0 0 64 62" fill="none">
-            <rect x="35.918" y="30" width="36" height="10.8473" rx="4" transform="rotate(39.6266 35.918 30)" fill="black"/>
-            <circle cx="29" cy="29" r="26" fill="white" stroke="black" strokeWidth="6"/>
-          </svg>
+          
+          {/* ★ 수정된 부분 1: flexShrink: 0을 추가하여 모바일에서 아이콘이 찌그러지거나 사라지는 현상 방지 */}
+          <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+            <svg width="20" height="20" viewBox="0 0 64 62" fill="none">
+              <rect x="35.918" y="30" width="36" height="10.8473" rx="4" transform="rotate(39.6266 35.918 30)" fill="black"/>
+              <circle cx="29" cy="29" r="26" fill="white" stroke="black" strokeWidth="6"/>
+            </svg>
+          </div>
+
           <input
             ref={inputRef}
             value={query}
@@ -67,10 +73,20 @@ export default function SpotlightSearch({ open, onClose }: Props) {
               flex: 1, border: 'none', outline: 'none',
               fontFamily: 'var(--font-body)', fontSize: '18px',
               letterSpacing: 'var(--tracking)', background: 'transparent',
+              /* ★ 수정된 부분 2: 모바일 좁은 화면에서 input 텍스트 길어질 때 레이아웃 밀림 방지 */
+              minWidth: 0 
             }}
           />
-          {query && <button onClick={() => setQuery('')} style={{ color: 'var(--gray-400)', fontSize: '20px' }}>×</button>}
+
+          {/* ★ 수정된 부분 3: 닫기 버튼(×)도 화면이 좁아질 때 안 찌그러지게 flexShrink: 0 추가 */}
+          {query && (
+            <button onClick={() => setQuery('')} style={{ color: 'var(--gray-400)', fontSize: '20px', flexShrink: 0 }}>
+              ×
+            </button>
+          )}
         </div>
+
+        {/* 검색 결과 리스트 영역 */}
         <div style={{ maxHeight: '360px', overflowY: 'auto' }}>
           {!query.trim() ? (
             <div style={{ padding: '32px', textAlign: 'center', color: 'var(--gray-400)', fontSize: '14px' }}>검색어를 입력하세요</div>
