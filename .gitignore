@@ -23,6 +23,8 @@
 # misc
 .DS_Store
 *.pem
+.AppleDouble
+.LSOverride
 
 # debug
 npm-debug.log*
@@ -42,6 +44,8 @@ gamisuk00
 gamisuk00.pub
 *.pem
 *.key
+*.p12
+*.pfx
 id_rsa*
 id_ed25519*
 *.ppk
@@ -50,8 +54,22 @@ id_ed25519*
 logs/
 *.log
 
-# shell scripts
-*.sh
+# IDEs / editors
+.idea/
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# caches
+.eslintcache
+.stylelintcache
+.swc/
+.turbo/
+.cache/
+.npm/
+.pnpm-store/
 
 # vercel
 .vercel
