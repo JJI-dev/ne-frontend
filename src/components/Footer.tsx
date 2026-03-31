@@ -13,9 +13,14 @@ export default function Footer() {
       }}>
         <div>
           <p style={{ fontSize: '11px', color: 'var(--gray-400)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Contact</p>
-          <a href="mailto:contact@jji.kr" style={{ fontSize: '14px', fontWeight: 500, letterSpacing: 'var(--tracking)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-            contact@jji.kr
-          </a>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <a href="mailto:contact@jji.kr" style={{ fontSize: '14px', fontWeight: 500, letterSpacing: 'var(--tracking)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+              contact@jji.kr
+            </a>
+            <a href="mailto:contact@jji.kr" style={{ fontSize: '14px', fontWeight: 500, letterSpacing: 'var(--tracking)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+              ne@jji.kr
+            </a>
+          </div>
         </div>
         <div>
           <p style={{ fontSize: '11px', color: 'var(--gray-400)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Pages</p>
@@ -28,7 +33,7 @@ export default function Footer() {
         <div>
           <p style={{ fontSize: '11px', color: 'var(--gray-400)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Studio</p>
           <p style={{ fontSize: '14px', letterSpacing: 'var(--tracking)' }}>JJI-NE</p>
-          <p style={{ fontSize: '14px', color: 'var(--gray-400)', letterSpacing: 'var(--tracking)', marginTop: '4px' }}>Creative Studio</p>
+          <p style={{ fontSize: '14px', color: 'var(--gray-400)', letterSpacing: 'var(--tracking)', marginTop: '4px' }}>Canvas Studio</p>
         </div>
       </div>
 
@@ -36,7 +41,7 @@ export default function Footer() {
       <div style={{
         padding: '16px var(--px)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        borderTop: '1px solid var(--gray-200)', flexWrap: 'wrap', gap: '8px',
+        borderTop: '', flexWrap: 'wrap', gap: '8px',
       }}>
         <p style={{ fontSize: '12px', color: 'var(--gray-400)', letterSpacing: 'var(--tracking)' }}>© 2026 JJI All rights reserved.</p>
         <p style={{ fontSize: '12px', color: 'var(--gray-400)', letterSpacing: 'var(--tracking)' }}>ne.jji.kr</p>

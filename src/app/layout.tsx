@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import CursorAnimation from '@/components/CursorAnimation'
+import LoadingScreen from '@/components/LoadingScreen'
 
 export const metadata: Metadata = {
   title: 'JJI-NE: Canvas',
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
         />
+        <link href="https://api.fontshare.com/v2/css?f[]=panchang@200,300,400,500,600,700,800&display=swap" rel="stylesheet" />
         {/*
           Panchang: cdnfonts CDN이 가끔 500 반환
           → 실패해도 Noto Sans KR fallback으로 렌더되므로 기능 영향 없음
@@ -43,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <CursorAnimation />
+        <LoadingScreen />
         {children}
       </body>
     </html>

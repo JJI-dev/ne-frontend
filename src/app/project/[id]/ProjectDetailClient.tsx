@@ -14,13 +14,15 @@ export default function ProjectDetailClient({ projectId }: Props) {
   const [toastVisible, setToastVisible] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
+  // ★ 추가됨: 이미지 뷰어(라이트박스) 상태
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null)
+
   const project = getProject(projectId)
 
   useEffect(() => {
     const load = async () => {
       setIsLoading(true)
       try {
-        // HEAD 먼저 체크해서 404일 때 콘솔 에러 억제
         const head = await fetch(`/content/projects/project-${projectId}.html`, { method: 'HEAD' })
         if (head.ok) {
           const res = await fetch(`/content/projects/project-${projectId}.html`)
@@ -37,10 +39,22 @@ export default function ProjectDetailClient({ projectId }: Props) {
     if (!htmlContent) return
     const handler = (e: MessageEvent) => {
       if (e.data?.type === 'resize' && typeof e.data.height === 'number') {
-        const h = Math.max(400, Math.min(e.data.height + 40, window.innerHeight * 8))
+        const h = Math.max(400, e.data.height + 40) 
         setIframeHeight(h)
-        // 1회 수신 후 리스너 제거 — 무한 업데이트 방지
-        window.removeEventListener('message', handler)
+      }
+      if (e.data?.type === 'mousemove') {
+        const rect = iframeRef.current?.getBoundingClientRect()
+        if (!rect) return
+        const synth = new MouseEvent('mousemove', {
+          bubbles: true,
+          clientX: rect.left + e.data.x,
+          clientY: rect.top  + e.data.y,
+        })
+        document.dispatchEvent(synth)
+      }
+      // ★ 추가됨: iframe 안에서 이미지를 클릭했다는 신호를 받으면 해당 이미지 URL을 저장합니다!
+      if (e.data?.type === 'openImage' && e.data.src) {
+        setLightboxImg(e.data.src)
       }
     }
     window.addEventListener('message', handler)
@@ -79,7 +93,7 @@ export default function ProjectDetailClient({ projectId }: Props) {
     { label: 'TYPE', value: project.type || '-' },
   ]
 
-  // Inject: overflow hidden on html+body, load 1회만 height 측정
+  // ★ 변경됨: HTML 안의 모든 <img> 태그에 클릭 이벤트를 자동으로 주입하는 스크립트 추가
   const injectedHtml = htmlContent
     ? htmlContent.replace(
         /<head>/i,
@@ -91,17 +105,26 @@ export default function ProjectDetailClient({ projectId }: Props) {
             var h=document.documentElement.scrollHeight;
             window.parent.postMessage({type:'resize',height:h},'*');
           });
+          document.addEventListener('mousemove', function(e) {
+            window.parent.postMessage({ type: 'mousemove', x: e.clientX, y: e.clientY }, '*');
+          });
+          
+          // 모든 이미지를 찾아서 클릭 가능하게 만듭니다.
+          document.querySelectorAll('img').forEach(function(img) {
+            img.style.cursor = 'zoom-in'; 
+            img.addEventListener('click', function() {
+              window.parent.postMessage({ type: 'openImage', src: this.src }, '*');
+            });
+          });
         </script></body>`
       )
     : ''
 
   return (
     <>
-      {/* Top bar: back + share */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '24px var(--px) 12px',
-        borderBottom: '1px solid var(--gray-200)',
       }}>
         <button
           onClick={() => router.back()}
@@ -133,7 +156,6 @@ export default function ProjectDetailClient({ projectId }: Props) {
         </button>
       </div>
 
-      {/* Title — Pretendard ExtraBold */}
       <div style={{
         padding: '32px var(--px) 24px',
         fontFamily: 'var(--font-body)',
@@ -145,24 +167,21 @@ export default function ProjectDetailClient({ projectId }: Props) {
         {project.title}
       </div>
 
-      {/* Thumbnail */}
       <div style={{
         margin: '0 var(--px)', aspectRatio: '16/9',
         background: 'var(--gray-100)', border: '1px solid var(--gray-200)',
         display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
       }}>
-        {project.thumbnail
-          ? <img src={project.thumbnail} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        {(project.thumbnail || project.images?.[0])
+          ? <img src={project.thumbnail || project.images[0]} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           : <span style={{ fontSize: '14px', color: 'var(--gray-400)' }}>{project.title}</span>
         }
       </div>
 
-      {/* Description */}
       <div style={{ padding: '32px var(--px)', fontSize: '15px', lineHeight: 1.85, color: '#333', maxWidth: '820px', letterSpacing: 'var(--tracking)' }}>
         {project.excerpt}
       </div>
 
-      {/* Specs */}
       <div style={{
         padding: '0 var(--px) 32px',
         display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
@@ -178,19 +197,11 @@ export default function ProjectDetailClient({ projectId }: Props) {
 
       <hr style={{ margin: '0 var(--px)', border: 'none', borderTop: '1px solid var(--gray-200)' }} />
 
-      {/* HTML Content — no scrollbar (overflow hidden injected) */}
       <div style={{ padding: '40px var(--px) 40px' }}>
         {isLoading ? (
           <p style={{ fontSize: '13px', color: 'var(--gray-400)' }}>콘텐츠를 불러오는 중...</p>
         ) : injectedHtml ? (
           <div style={{ position: 'relative' }}>
-            {/* 투명 overlay — iframe 커서 애니메이션 유지 */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 2,
-              cursor: 'none',
-            }} />
             <iframe
               ref={iframeRef}
               srcDoc={injectedHtml}
@@ -200,7 +211,6 @@ export default function ProjectDetailClient({ projectId }: Props) {
                 border: 'none',
                 display: 'block',
                 overflow: 'hidden',
-                pointerEvents: 'none',
               }}
               scrolling="no"
               sandbox="allow-scripts"
@@ -209,15 +219,11 @@ export default function ProjectDetailClient({ projectId }: Props) {
           </div>
         ) : (
           <p style={{ fontSize: '13px', color: 'var(--gray-400)' }}>
-            HTML 콘텐츠:{' '}
-            <code style={{ background: 'var(--gray-100)', padding: '2px 6px', borderRadius: '3px', fontSize: '12px' }}>
-              public/content/projects/project-{projectId}.html
-            </code>
+            HTML 콘텐츠 오류
           </p>
         )}
       </div>
 
-      {/* Share toast */}
       {toastVisible && (
         <div style={{
           position: 'fixed', bottom: '32px', left: '50%', transform: 'translateX(-50%)',
@@ -227,6 +233,25 @@ export default function ProjectDetailClient({ projectId }: Props) {
           zIndex: 300, pointerEvents: 'none',
         }}>
           링크가 복사되었습니다
+        </div>
+      )}
+
+      {/* ★ 추가됨: 이미지 뷰어 (전체 화면 오버레이) */}
+      {lightboxImg && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, zIndex: 999999,
+            background: 'rgba(0,0,0,0.85)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'zoom-out', padding: '40px'
+          }}
+          onClick={() => setLightboxImg(null)}
+        >
+          <img 
+            src={lightboxImg} 
+            alt="Enlarged view" 
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: '8px', boxShadow: '0 4px 32px rgba(0,0,0,0.5)' }} 
+          />
         </div>
       )}
     </>

@@ -71,13 +71,13 @@ export default function AboutPage() {
           </div>
 
           <p style={{ fontSize: '15px', lineHeight: 1.9, color: '#333', fontWeight: 400, marginBottom: '12px', letterSpacing: 'var(--tracking)' }}>
-            작업문의는 메일로 부탁드립니다.<br />
-            下のメールでご連絡ください。<br />
-            所属スタジオとスケジュール、作品名、単価を明記してご相談くださいませ。
+            관심 가져주셔서 감사합니다. 원활한 작업을 위해 당분간 신규 의뢰는 정중히 사양하고 있습니다. <br/>
+            작업이 가능해지면 다시 공지하겠습니다. 문의 시에는 구체적인 작업 조건(소속, 기간, 예산 등)을 꼭 포함해 주세요.<br />
+           
           </p>
           <p style={{ fontSize: '14px', color: 'var(--gray-600)', fontWeight: 400, lineHeight: 1.7, marginBottom: '40px', letterSpacing: 'var(--tracking)' }}>
-            + 현재 작업은 받지 않습니다.<br />
-            (拘束中です、しばらく仕事受け付けません。ご了承ください)
+            お声がけいただきありがとうございます。あいにく現在拘束中のため, しばらくの間は新規のお引き受けが難しい状況です。<br/>
+             受付再開までお待ちいただけますと幸いです。お問い合わせの際は、スケジュールや単가等の詳細を併せてご連絡ください。
           </p>
 
           <a
@@ -97,7 +97,7 @@ export default function AboutPage() {
           </a>
 
           <p style={{ fontSize: '13px', color: 'var(--gray-400)', letterSpacing: 'var(--tracking)' }}>
-            작품제목, 작업파트 클릭시 해당 작업물로 이동합니다.
+            WORK 페이지에서 작업 확인해주세요!!
           </p>
         </div>
       </main>
