@@ -22,15 +22,18 @@ export default function ProjectDetailClient({ projectId }: Props) {
 
   const derivedBasePath = (() => {
     const envBase = (process.env.NEXT_PUBLIC_BASE_PATH || '').trim().replace(/\/$/, '')
-    if (!pathname) return envBase
+    // Next의 basePath 설정에 따라 usePathname이 basePath를 생략하는 경우가 있어서,
+    // iframe srcDoc 보정에는 브라우저의 실제 URL 경로(window.location.pathname)를 우선 사용합니다.
+    const rawPath = (typeof window !== 'undefined' ? window.location.pathname : pathname) || ''
+    if (!rawPath) return envBase
 
     // 예: /ne-frontend/project/1 -> basePath는 /ne-frontend
     const marker = `/project/${projectId}`
-    const idx = pathname.indexOf(marker)
-    if (idx >= 0) return pathname.slice(0, idx).replace(/\/$/, '')
+    const idx = rawPath.indexOf(marker)
+    if (idx >= 0) return rawPath.slice(0, idx).replace(/\/$/, '')
 
     // fallback: 첫 세그먼트가 basePath인 경우
-    const m = pathname.match(/^\/[^/]+/)
+    const m = rawPath.match(/^\/[^/]+/)
     return m?.[0]?.replace(/\/$/, '') ?? envBase
   })()
 
