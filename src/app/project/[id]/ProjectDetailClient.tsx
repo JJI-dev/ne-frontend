@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { getProject } from '../data/projects-content'
 
 interface Props { projectId: string }
 
 export default function ProjectDetailClient({ projectId }: Props) {
   const router = useRouter()
+  const pathname = usePathname()
   const [htmlContent, setHtmlContent] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [iframeHeight, setIframeHeight] = useState(600)
@@ -19,13 +20,39 @@ export default function ProjectDetailClient({ projectId }: Props) {
 
   const project = getProject(projectId)
 
+  const derivedBasePath = (() => {
+    const envBase = (process.env.NEXT_PUBLIC_BASE_PATH || '').trim().replace(/\/$/, '')
+    if (!pathname) return envBase
+
+    // 예: /ne-frontend/project/1 -> basePath는 /ne-frontend
+    const marker = `/project/${projectId}`
+    const idx = pathname.indexOf(marker)
+    if (idx >= 0) return pathname.slice(0, idx).replace(/\/$/, '')
+
+    // fallback: 첫 세그먼트가 basePath인 경우
+    const m = pathname.match(/^\/[^/]+/)
+    return m?.[0]?.replace(/\/$/, '') ?? envBase
+  })()
+
+  const basePath = derivedBasePath || ''
+
+  const rewriteAbsolutePaths = (html: string) => {
+    const p = basePath.replace(/\/$/, '')
+    // srcDoc 문서에서는 base URI가 달라질 수 있어서, /images/... 같은 절대경로를 basePath 포함 경로로 보정합니다.
+    return html
+      .replace(/src="\/images\//g, `src="${p}/images/`)
+      .replace(/src='\/images\//g, `src='${p}/images/`)
+      .replace(/href="\/images\//g, `href="${p}/images/`)
+      .replace(/href='\/images\//g, `href='${p}/images/`)
+  }
+
   useEffect(() => {
     const load = async () => {
       setIsLoading(true)
       try {
-        const head = await fetch(`/content/projects/project-${projectId}.html`, { method: 'HEAD' })
+        const head = await fetch(`${basePath}/content/projects/project-${projectId}.html`, { method: 'HEAD' })
         if (head.ok) {
-          const res = await fetch(`/content/projects/project-${projectId}.html`)
+          const res = await fetch(`${basePath}/content/projects/project-${projectId}.html`)
           const text = await res.text()
           if (text && !text.includes('__NEXT_DATA__')) setHtmlContent(text)
         }
@@ -33,7 +60,7 @@ export default function ProjectDetailClient({ projectId }: Props) {
       setIsLoading(false)
     }
     load()
-  }, [projectId])
+  }, [projectId, basePath])
 
   useEffect(() => {
     if (!htmlContent) return
@@ -92,16 +119,6 @@ export default function ProjectDetailClient({ projectId }: Props) {
     { label: 'DATE', value: project.year },
     { label: 'TYPE', value: project.type || '-' },
   ]
-
-  const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
-
-  const rewriteAbsolutePaths = (html: string) => {
-    if (!basePath) return html
-    return html.replace(
-      /\b(src|href)=(["'])\/(?!\/)/g,
-      (_m, attr: string, quote: string) => `${attr}=${quote}${basePath}/`
-    )
-  }
 
   // ★ 변경됨: HTML 안의 모든 <img> 태그에 클릭 이벤트를 자동으로 주입하는 스크립트 추가
   const injectedHtml = htmlContent
