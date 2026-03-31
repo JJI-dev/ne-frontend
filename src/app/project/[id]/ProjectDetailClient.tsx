@@ -93,9 +93,19 @@ export default function ProjectDetailClient({ projectId }: Props) {
     { label: 'TYPE', value: project.type || '-' },
   ]
 
+  const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
+
+  const rewriteAbsolutePaths = (html: string) => {
+    if (!basePath) return html
+    return html.replace(
+      /\b(src|href)=(["'])\/(?!\/)/g,
+      (_m, attr: string, quote: string) => `${attr}=${quote}${basePath}/`
+    )
+  }
+
   // ★ 변경됨: HTML 안의 모든 <img> 태그에 클릭 이벤트를 자동으로 주입하는 스크립트 추가
   const injectedHtml = htmlContent
-    ? htmlContent.replace(
+    ? rewriteAbsolutePaths(htmlContent).replace(
         /<head>/i,
         `<head><style>html,body{overflow:hidden;margin:0;padding:0;}</style>`
       ).replace(

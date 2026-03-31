@@ -30,7 +30,7 @@ export const projects: Project[] = [
     duration: '12개월',
     team: [''],
     tags: [''],
-    images: ['/images/projects/1.png'],
+    images: ['/images/projects/past/file1.png'],
     type: 'WEB/MOBILE DEVELOPMENT',
     thumbnail:'/images/projects/past/file1.png',
     featured: true,
