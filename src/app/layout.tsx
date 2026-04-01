@@ -4,7 +4,7 @@ import CursorAnimation from '@/components/CursorAnimation'
 import LoadingScreen from '@/components/LoadingScreen'
 
 export const metadata: Metadata = {
-  title: 'JJI-NE: Canvas',
+  title: 'Canvas | JJI-NE',
   description: 'JJI-NE Portfolio',
 }
 
