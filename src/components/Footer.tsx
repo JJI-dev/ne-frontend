@@ -17,7 +17,7 @@ export default function Footer() {
             <a href="mailto:contact@jji.kr" style={{ fontSize: '14px', fontWeight: 500, letterSpacing: 'var(--tracking)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
               contact@jji.kr
             </a>
-            <a href="mailto:contact@jji.kr" style={{ fontSize: '14px', fontWeight: 500, letterSpacing: 'var(--tracking)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+            <a href="mailto:ne@jji.kr" style={{ fontSize: '14px', fontWeight: 500, letterSpacing: 'var(--tracking)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
               ne@jji.kr
             </a>
           </div>
