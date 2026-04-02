@@ -25,7 +25,7 @@ export default function Footer() {
         <div>
           <p style={{ fontSize: '11px', color: 'var(--gray-400)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Pages</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {[{ label: 'Home', href: '/' }, { label: 'About', href: '/about' }, { label: 'Works', href: '/' }].map(({ label, href }) => (
+            {[{ label: 'Work', href: '/' }, { label: 'About', href: '/about' }, { label: 'Project Request', href: 'https://req.jji.kr' }].map(({ label, href }) => (
               <a key={label} href={href} style={{ fontSize: '14px', letterSpacing: 'var(--tracking)', color: 'var(--gray-600)' }}>{label}</a>
             ))}
           </div>
