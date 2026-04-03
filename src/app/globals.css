@@ -28,6 +28,13 @@
 }
 
 html { scroll-behavior: smooth; }
+.p { font-size: 16px; line-height: 1.85; letter-spacing: -0.01em; color: #333; margin-bottom: 24px; }
+.h2 { font-size: 22px; font-weight: 700; margin: 40px 0 16px; letter-spacing: -0.03em; }
+.h3 { font-size: 18px; font-weight: 600; margin: 32px 0 12px; letter-spacing: -0.03em; }
+.codeBlock { background: var(--gray-100); border-radius: 8px; padding: 16px 20px; font-family: 'Courier New', monospace; font-size: 13px; overflow-x: auto; margin-bottom: 24px; line-height: 1.7; }
+.ol { margin: 0 0 24px 24px; font-size: 16px; line-height: 1.85; color: #333; }
+.ol li { margin-bottom: 8px; }
+
 
 /* ── Nav logo circle (MO 구조 통일) ── */
 .nav-logo-inner {
@@ -131,6 +138,11 @@ button { background: none; border: none; font-family: inherit; cursor: none; }
 .reveal-delay-3 { transition-delay: 0.3s; }
 .reveal-delay-4 { transition-delay: 0.4s; }
 
+
+/* 제목 스타일 (필요시) */
+h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.04em; }
+
+
 /* ── main → footer gap ── */
 main {
   padding-bottom: 60px;
@@ -144,3 +156,57 @@ main {
   .work-grid { grid-template-columns: 1fr !important; }
   :root { --px: 20px; }
 }
+/* --- 이미지 그리드 및 섹션 --- */
+.section { margin-bottom: 48px; }
+.image-row { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 12px; 
+  margin-top: 24px; 
+  margin-bottom: 48px; 
+}
+.image-row img {
+  width: 100%;
+  /* aspect-ratio: 1 / 1; */
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- 라이트박스 모달 (스크린샷 디자인 반영) --- */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  padding: 40px;
+  animation: fadeIn 0.2s ease;
+}
+
+.lightbox-content {
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: zoomIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: calc(90vh - 20px);
+  object-fit: contain;
+  border-radius: 4px;
+  display: block;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }

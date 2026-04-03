@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
-import { projects } from '@/app/project/data/projects-content'
+import { projects } from '@/app/work/data/work-content'
 import SpotlightSearch from './SpotlightSearch'
 
 const FILTERS = ['ALL', 'ILLUSTRATION', 'GRAPHICS', 'VIDEO', 'DESIGN', '.'] as const
@@ -142,7 +142,7 @@ export default function WorkGrid() {
             ) : (
               <Link
                 key={p.id}
-                href={`/project/${p.id}`}
+                href={`/work/${p.id}`}
                 className={`work-item reveal reveal-delay-${Math.min((idx % 3) + 1, 4)}`}
                 style={{ position: 'relative', aspectRatio: '4/5', background: 'var(--gray-100)', display: 'block', textDecoration: 'none' }}
               >

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { projects } from '@/app/project/data/projects-content'
+import { projects } from '@/app/work/data/work-content'
 
 interface Props { open: boolean; onClose: () => void }
 
