@@ -5,16 +5,16 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WorkDetailClient from './WorkDetailClient'
-import { getProject, getAllProjectIds } from '../data/work-content'
+import { getWork, getAllWorkIds } from '../data/work-content'
 import { notFound } from 'next/navigation'
 
 export function generateStaticParams() {
-  return getAllProjectIds()
+  return getAllWorkIds()
 }
 
 export default async function WorkDetailPage({ params }: { params: { id: string } }) {
   const { id } = params
-  const project = getProject(id)
+  const project = getWork(id)
   if (!project) notFound()
 
   const filePath = path.join(process.cwd(), 'content/works', `${id}.mdx`)
@@ -77,7 +77,7 @@ export default async function WorkDetailPage({ params }: { params: { id: string 
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Header />
       <main style={{ paddingTop: '80px' }}>
-        <WorkDetailClient project={project}>
+        <WorkDetailClient work={project}>
           <MDXRemote source={mdxContent} components={components} />
         </WorkDetailClient>
       </main>

@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Project } from '../data/work-content'
+import { Work } from '../data/work-content'
 
 interface Props { 
-  project: Project
+  work: Work
   children: React.ReactNode 
 }
 
-export default function WorkDetailClient({ project, children }: Props) {
+export default function WorkDetailClient({ work, children }: Props) {
   const router = useRouter()
   const [toastVisible, setToastVisible] = useState(false)
   const [lightboxImg, setLightboxImg] = useState<string | null>(null)
@@ -53,10 +53,10 @@ export default function WorkDetailClient({ project, children }: Props) {
 
   // ✨ 복구된 디테일(스펙) 정보!
   const specs = [
-    { label: 'CLIENT', value: project.client || '-' },
-    { label: 'CATEGORY', value: project.category },
-    { label: 'DATE', value: project.year },
-    { label: 'TYPE', value: project.type || '-' },
+    { label: 'CLIENT', value: work.client || '-' },
+    { label: 'CATEGORY', value: work.category },
+    { label: 'DATE', value: work.year },
+    { label: 'TYPE', value: work.type || '-' },
   ]
 
   return (
@@ -78,20 +78,20 @@ export default function WorkDetailClient({ project, children }: Props) {
       </div>
 
       <div style={{ padding: '32px var(--px) 24px', fontWeight: 800, fontSize: 'clamp(28px, 4.5vw, 56px)', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-        {project.title}
+        {work.title}
       </div>
 
       {/* 썸네일 영역 */}
-      {(project.thumbnail || project.images?.[0]) && (
+      {(work.thumbnail || work.images?.[0]) && (
         <div style={{ margin: '0 var(--px)', aspectRatio: '16/9', background: 'var(--gray-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-          <img src={project.thumbnail || project.images[0]} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={work.thumbnail || work.images[0]} alt={work.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       )}
 
       {/* 설명 영역 */}
-      {project.excerpt && (
+      {work.excerpt && (
         <div style={{ padding: '32px var(--px) 0', fontSize: '15px', lineHeight: 1.85, color: '#333', maxWidth: '820px' }}>
-          {project.excerpt}
+          {work.excerpt}
         </div>
       )}
 

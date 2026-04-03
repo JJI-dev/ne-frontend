@@ -1,4 +1,4 @@
-export interface Project {
+export interface Work {
   id: string
   title: string
   description: string
@@ -18,7 +18,7 @@ export interface Project {
   hasTbu?: boolean
 }
 
-export const projects: Project[] = [
+export const projects: Work[] = [
   {
     id: '1',
     title: '과거 기록',
@@ -38,9 +38,9 @@ export const projects: Project[] = [
   },
 ]
 
-export function getProject(id: string): Project | undefined {
+export function getWork(id: string): Work | undefined {
   return projects.find(p => p.id === id)
 }
-export function getAllProjects(): Project[] { return projects }
-export function getFeaturedProjects(): Project[] { return projects.filter(p => p.featured) }
-export function getAllProjectIds() { return projects.map(p => ({ id: p.id })) }
+export function getAllWorks(): Work[] { return projects }
+export function getFeaturedWorks(): Work[] { return projects.filter(p => p.featured) }
+export function getAllWorkIds() { return projects.map(p => ({ id: p.id })) }
