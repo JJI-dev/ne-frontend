@@ -6,6 +6,9 @@ import LoadingScreen from '@/components/LoadingScreen'
 export const metadata: Metadata = {
   title: 'Canvas | JJI-NE',
   description: 'JJI-NE Portfolio',
+  alternates: {
+    canonical: 'https://space.jji.kr', 
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
