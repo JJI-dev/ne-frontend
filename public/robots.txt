@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://ne.jji.kr
+
+# Sitemaps
+Sitemap: https://ne.jji.kr/sitemap.xml
